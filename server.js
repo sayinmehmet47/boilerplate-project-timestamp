@@ -35,10 +35,11 @@ app.get('/api/:date', (req, res) => {
   const dateToUnix = Math.floor(new Date(req.params.date).getTime() / 1000);
   const dateUTC1 = new Date(date).toUTCString();
   const dateUTC2 = new Date(req.params.date).toUTCString();
-  var m = moment(date);
 
   if (req.params.date.includes('-') && moment(req.params.date).isValid()) {
     return res.json({ unix: dateToUnix, utc: dateUTC2 });
+  } else if (moment(req.params.date, "'YYYY-MMM-DD'").isValid()) {
+    res.json({ unix: dateToUnix, utc: req.params.date });
   } else if (
     req.params.date.includes('GMT') &&
     moment(req.params.date).isValid()
