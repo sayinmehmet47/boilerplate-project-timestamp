@@ -43,7 +43,7 @@ app.get('/api/:date', (req, res) => {
     req.params.date.includes('GMT') &&
     moment(req.params.date).isValid()
   ) {
-    return res.json({ unix: 'fdsafsd' });
+    return res.json({ unix: dateToUnix, utc: req.params.date });
   } else if (!m.isValid()) {
     return res.json({ error: 'Invalid Date' });
   } else {
