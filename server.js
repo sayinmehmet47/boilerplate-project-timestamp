@@ -27,11 +27,13 @@ app.get('/api/hello', function (req, res) {
 
 app.get('/api/:date', (req, res) => {
   const date = Number(req.params.date);
-  const dateVal = new Date(date).toUTCString();
-  if (date.include('-')) {
-    return res.send('sdklfjasdklfj');
+  const dateToUnix = Math.floor(new Date(req.params.date).getTime() / 1000);
+  const dateUTC1 = new Date(date).toUTCString();
+  const dateUTC2 = new Date(req.params.date).toUTCString();
+  if (req.params.date.includes('-')) {
+    return res.json({ unix: dateToUnix, utc: dateUTC2 });
   } else {
-    return res.json({ unix: date, utc: dateVal });
+    return res.json({ unix: date, utc: dateUTC1 });
   }
 });
 
