@@ -28,8 +28,11 @@ app.get('/api/hello', function (req, res) {
 app.get('/api/:date', (req, res) => {
   const date = Number(req.params.date);
   const dateVal = new Date(date).toUTCString();
-
-  res.json({ unix: date, utc: dateVal });
+  if (date.include('-')) {
+    return res.send('sdklfjasdklfj');
+  } else {
+    return res.json({ unix: date, utc: dateVal });
+  }
 });
 
 // listen for requests :)
