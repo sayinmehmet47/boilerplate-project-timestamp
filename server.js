@@ -37,7 +37,7 @@ app.get('/api/:date', (req, res) => {
   const dateUTC2 = new Date(req.params.date).toUTCString();
   var m = moment(date);
 
-  if (req.params.date.includes('-')) {
+  if (req.params.date.includes('-') && m.isValid()) {
     return res.json({ unix: dateToUnix, utc: dateUTC2 });
   } else if (!m.isValid()) {
     return res.json({ error: 'Invalid Date' });
