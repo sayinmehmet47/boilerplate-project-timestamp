@@ -50,7 +50,7 @@ app.get('/api/:date', (req, res) => {
       utc: date,
     });
   } else if (!moment(date).isValid()) {
-    res.json({ unix: null, utc: 'Invalid Date' });
+    res.json({ error: 'Invalid Date' });
   } else {
     res.json({
       unix: new Date(date).getTime() / 1000,
