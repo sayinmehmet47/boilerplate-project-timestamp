@@ -36,12 +36,12 @@ app.get('/api/:date', (req, res) => {
 
   if (moment(date, 'X', true).isValid()) {
     res.json({
-      unix: new Date(Number(date)).getTime() / 1000,
+      unix: date,
       utc: new Date(Number(date)).toUTCString(),
     });
   } else if (moment(date, ['DD-MM-YYYY', 'D-M-YYYY'], true).isValid()) {
     res.json({
-      unix: new Date(date).getTime() / 1000,
+      unix: new Date(date).getTime() / 10,
       utc: new Date(date).toUTCString(),
     });
   } else if (moment(date, 'dddd, DD MMMM YYYY, h:mm:ss GMT', true).isValid()) {
@@ -53,7 +53,7 @@ app.get('/api/:date', (req, res) => {
     res.json({ error: 'Invalid Date' });
   } else {
     res.json({
-      unix: new Date(date).getTime() / 1000,
+      unix: new Date(date).getTime() / 10,
       utc: new Date(date).toUTCString(),
     });
   }
