@@ -32,29 +32,31 @@ app.get('/api', (req, res) => {
 
 app.get('/api/:date', (req, res) => {
   const moment = require('moment');
-  const date = req.params.date;
+  const date_string = req.params.date;
 
-  if (moment(date, 'X', true).isValid()) {
+  if (moment(date_string, 'X', true).isValid()) {
     res.json({
-      unix: date,
-      utc: new Date(Number(date)).toUTCString(),
+      unix: JSON.parse(date_string),
+      utc: new Date(Number(date_string)).toUTCString(),
     });
-  } else if (moment(date, ['DD-MM-YYYY', 'D-M-YYYY'], true).isValid()) {
+  } else if (moment(date_string, ['DD-MM-YYYY', 'D-M-YYYY'], true).isValid()) {
     res.json({
-      unix: new Date(date).getTime() / 10,
-      utc: new Date(date).toUTCString(),
+      unix: new Date(date_string).getTime() / 10,
+      utc: new Date(date_string).toUTCString(),
     });
-  } else if (moment(date, 'dddd, DD MMMM YYYY, h:mm:ss GMT', true).isValid()) {
+  } else if (
+    moment(date_string, 'dddd, DD MMMM YYYY, h:mm:ss GMT', true).isValid()
+  ) {
     res.json({
-      unix: new Date(date).getTime() / 1000,
-      utc: date,
+      unix: new Date(date_string).getTime() / 1000,
+      utc: date_string,
     });
-  } else if (!moment(date).isValid()) {
+  } else if (!moment(date_string).isValid()) {
     res.json({ error: 'Invalid Date' });
   } else {
     res.json({
-      unix: new Date(date).getTime() / 10,
-      utc: new Date(date).toUTCString(),
+      unix: new Date(date_string).getTime() / 10,
+      utc: new Date(date_string).toUTCString(),
     });
   }
 });
