@@ -31,24 +31,29 @@ app.get('/api', (req, res) => {
 });
 
 app.get('/api/:date', (req, res) => {
-  const date = Number(req.params.date);
-  const dateToUnix = Math.floor(new Date(req.params.date).getTime() / 1000);
-  const dateUTC1 = new Date(date).toUTCString();
-  const dateUTC2 = new Date(req.params.date).toUTCString();
+  const moment = require('moment');
+  const date = req.params.date;
 
-  if (req.params.date.includes('-') && moment(req.params.date).isValid()) {
-    return res.json({ unix: dateToUnix, utc: dateUTC2 });
-  } else if (moment(req.params.date, "'YYYY-MMM-DD'").isValid()) {
-    res.json({ unix: dateToUnix, utc: req.params.date });
-  } else if (
-    req.params.date.includes('GMT') &&
-    moment(req.params.date).isValid()
-  ) {
-    return res.json({ unix: dateToUnix, utc: req.params.date });
-  } else if (!m.isValid()) {
-    return res.json({ error: 'Invalid Date' });
+  if (moment(date, 'X', true).isValid()) {
+    res.json({
+      unix: new Date(Number(date)).getTime() / 1000,
+      utc: new Date(Number(date)).toUTCString(),
+    });
+  } else if (moment(date, ['DD-MM-YYYY', 'D-M-YYYY'], true).isValid()) {
+    res.json({
+      unix: new Date(date).getTime() / 1000,
+      utc: new Date(date).toUTCString(),
+    });
+  } else if (moment(date, 'dddd, DD MMMM YYYY, h:mm:ss GMT', true).isValid()) {
+    res.json({
+      unix: new Date(date).getTime() / 1000,
+      utc: date,
+    });
   } else {
-    return res.json({ unix: date, utc: dateUTC1 });
+    res.json({
+      unix: new Date(date).getTime() / 1000,
+      utc: new Date(date).toUTCString(),
+    });
   }
 });
 
